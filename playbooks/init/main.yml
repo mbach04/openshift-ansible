@@ -25,6 +25,8 @@
 # NOTE: we must call init repos before installing base packages
 # because they may come from the repos.
 - import_playbook: repos.yml
+  tags:
+    - handle_repos
 
 # base_packages needs to be setup for openshift_facts.py to run correctly.
 - import_playbook: base_packages.yml

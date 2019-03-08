@@ -12,6 +12,11 @@
     - ansible_distribution == 'RedHat'
     - openshift_deployment_type == 'openshift-enterprise'
     - (rhsub_user is defined and rhsub_pass is defined) or (rhsub_ak is defined and rhsub_orgid is defined)
+    tags:
+      - register_repos
+
   - name: initialize openshift repos
     import_role:
       name: openshift_repos
+    tags:
+      - register_repos

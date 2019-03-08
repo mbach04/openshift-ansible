@@ -3,7 +3,7 @@
 
 - name: create instance for ami creation
   ec2:
-    assign_public_ip: yes
+    assign_public_ip: no
     region: "{{ openshift_aws_region }}"
     key_name: "{{ openshift_aws_ssh_key_name }}"
     group: "{{ openshift_aws_build_ami_group }}"
@@ -17,6 +17,7 @@
       Name: "{{ openshift_aws_base_ami_name }}"
     instance_tags:
       Name: "{{ openshift_aws_base_ami_name }}"
+    user_data: "{{ custom_user_data }}"
 
 - name: fetch newly created instances
   ec2_instance_facts:
@@ -32,11 +33,11 @@
 - name: wait for ssh to become available
   wait_for:
     port: 22
-    host: "{{ instancesout.instances[0].public_ip_address }}"
+    host: "{{ instancesout.instances[0].private_ip_address }}"
     timeout: 300
     search_regex: OpenSSH
 
 - name: add host to nodes
   add_host:
     groups: nodes,g_new_node_hosts
-    name: "{{ instancesout.instances[0].public_dns_name }}"
+    name: "{{ instancesout.instances[0].private_dns_name }}"

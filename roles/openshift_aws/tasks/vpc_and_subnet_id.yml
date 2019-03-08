@@ -17,7 +17,11 @@
     filters:
       availability-zone: "{{ item }}"
       vpc-id: "{{ vpcout.vpcs[0].id }}"
-  with_items: "{{ openshift_aws_vpc.subnets[openshift_aws_region] | map(attribute='az') | list }}"
+#  with_items: "{{ openshift_aws_vpc.subnets | map(attribute='az') | list }}"
+  with_items:
+    - us-east-1d
+    - us-east-1e
+    - us-east-1f
   register: subnetout
 
 - name: debug subnetout
